@@ -43,7 +43,7 @@ export const ChatInput = ({ onSend, isLoading }: ChatInputProps) => {
   };
 
   return (
-    <div className="pb-8 px-4">
+    <div className="fixed bottom-0 left-0 right-0 pb-4 px-4 bg-[#1a1a1a] border-t border-[#2a2a2a] z-10">
       <div className="max-w-3xl mx-auto">
         <form onSubmit={handleSubmit} className="relative">
           <div className="relative flex items-center">

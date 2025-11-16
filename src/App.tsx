@@ -80,7 +80,7 @@ function App() {
 
   return (
     <VoiceContext.Provider value={{ isMuted, toggleMute }}>
-      <div className="min-h-screen bg-[#1a1a1a] flex flex-col relative">
+      <div className="h-screen bg-[#1a1a1a] flex flex-col relative overflow-hidden">
         <Header />
         <MessageList messages={messages} isLoading={isLoading} />
         <ChatInput onSend={handleSendMessage} isLoading={isLoading} />

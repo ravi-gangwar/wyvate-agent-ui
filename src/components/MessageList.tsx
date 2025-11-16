@@ -16,7 +16,7 @@ export const MessageList = ({ messages, isLoading }: MessageListProps) => {
   }, [messages, isLoading]);
 
   return (
-    <div className="flex-1 overflow-y-auto px-4 py-6 space-y-4">
+    <div className="flex-1 overflow-y-auto px-4 py-6 space-y-4 pb-24">
       <div className="max-w-3xl mx-auto">
         {messages.length === 0 && !isLoading && (
           <div className="text-center py-12">
