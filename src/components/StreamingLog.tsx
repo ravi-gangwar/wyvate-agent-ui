@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react';
-import { parseMarkdown } from '../utils/markdown';
 
-interface StreamingTextProps {
+interface StreamingLogProps {
   text: string;
   speed?: number;
 }
 
-export const StreamingText = ({ text, speed = 100 }: StreamingTextProps) => {
+export const StreamingLog = ({ text, speed = 30 }: StreamingLogProps) => {
   const [displayedText, setDisplayedText] = useState('');
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -26,13 +25,8 @@ export const StreamingText = ({ text, speed = 100 }: StreamingTextProps) => {
     setCurrentIndex(0);
   }, [text]);
 
-  const htmlContent = parseMarkdown(displayedText);
-
   return (
-    <div
-      className="markdown-content text-sm md:text-base text-gray-200"
-      dangerouslySetInnerHTML={{ __html: htmlContent }}
-    />
+    <span className="text-sm">{displayedText}</span>
   );
 };
 

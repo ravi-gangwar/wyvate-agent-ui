@@ -2,14 +2,14 @@ import { ChatResponse } from '../types/chat';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
-export const sendChatMessage = async (userQuery: string): Promise<ChatResponse> => {
+export const sendChatMessage = async (userQuery: string, chatId: string): Promise<ChatResponse> => {
   try {
     const response = await fetch(`${API_BASE_URL}/chat`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ userQuery }),
+      body: JSON.stringify({ userQuery, chatId, userId: '1' }),
     });
 
     if (!response.ok) {

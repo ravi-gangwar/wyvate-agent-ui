@@ -1,9 +1,11 @@
 import { useState, useCallback, createContext, useContext } from 'react';
+import { nanoid } from 'nanoid';
 import { Header } from './components/Header';
 import { MessageList } from './components/MessageList';
 import { ChatInput } from './components/ChatInput';
 import { Message } from './types/chat';
 import { sendChatMessage } from './services/chatApi';
+import { useSocket } from './hooks/useSocket';
 
 interface VoiceContextType {
   isMuted: boolean;
@@ -22,6 +24,8 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isMuted, setIsMuted] = useState(false);
+  const [chatId] = useState(() => nanoid(10));
+  const { logs, clearLogs } = useSocket(chatId);
 
   const handleSendMessage = useCallback(async (userQuery: string) => {
     const userMessage: Message = {
@@ -34,9 +38,10 @@ function App() {
     setMessages((prev) => [...prev, userMessage]);
     setIsLoading(true);
     setError(null);
+    clearLogs();
 
     try {
-      const response = await sendChatMessage(userQuery);
+      const response = await sendChatMessage(userQuery, chatId);
 
       if (response.error) {
         setError(response.error);
@@ -72,7 +77,7 @@ function App() {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [chatId, clearLogs]);
 
   const toggleMute = useCallback(() => {
     setIsMuted((prev) => !prev);
@@ -82,7 +87,7 @@ function App() {
     <VoiceContext.Provider value={{ isMuted, toggleMute }}>
       <div className="h-screen bg-[#1a1a1a] flex flex-col relative overflow-hidden">
         <Header />
-        <MessageList messages={messages} isLoading={isLoading} />
+        <MessageList messages={messages} isLoading={isLoading} logs={logs} />
         <ChatInput onSend={handleSendMessage} isLoading={isLoading} />
       </div>
     </VoiceContext.Provider>
