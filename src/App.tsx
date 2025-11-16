@@ -1,4 +1,4 @@
-import { useState, useCallback, createContext, useContext } from 'react';
+import { useState, useCallback, createContext, useContext, useRef } from 'react';
 import { nanoid } from 'nanoid';
 import { Header } from './components/Header';
 import { MessageList } from './components/MessageList';
@@ -26,6 +26,16 @@ function App() {
   const [isMuted, setIsMuted] = useState(false);
   const [chatId] = useState(() => nanoid(10));
   const { logs, clearLogs } = useSocket(chatId);
+  const abortControllerRef = useRef<AbortController | null>(null);
+
+  const handleCancelRequest = useCallback(() => {
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+      abortControllerRef.current = null;
+      setIsLoading(false);
+      clearLogs();
+    }
+  }, [clearLogs]);
 
   const handleSendMessage = useCallback(async (userQuery: string) => {
     const userMessage: Message = {
@@ -40,8 +50,11 @@ function App() {
     setError(null);
     clearLogs();
 
+    // Create new AbortController for this request
+    abortControllerRef.current = new AbortController();
+
     try {
-      const response = await sendChatMessage(userQuery, chatId);
+      const response = await sendChatMessage(userQuery, chatId, abortControllerRef.current.signal);
 
       if (response.error) {
         setError(response.error);
@@ -65,17 +78,22 @@ function App() {
       }
     } catch (err) {
       const errorMsg = err instanceof Error ? err.message : 'Failed to connect to the server';
-      setError(errorMsg);
-      const errorMessage: Message = {
-        id: `ai-${Date.now()}`,
-        type: 'ai',
-        markdown_text: `**Connection Error:** ${errorMsg}. Please check if the API server is running.`,
-        ai_voice: `Connection error: ${errorMsg}`,
-        timestamp: Date.now(),
-      };
-      setMessages((prev) => [...prev, errorMessage]);
+      
+      // Don't show error message if request was cancelled
+      if (errorMsg !== 'Request cancelled') {
+        setError(errorMsg);
+        const errorMessage: Message = {
+          id: `ai-${Date.now()}`,
+          type: 'ai',
+          markdown_text: `**Connection Error:** ${errorMsg}. Please check if the API server is running.`,
+          ai_voice: `Connection error: ${errorMsg}`,
+          timestamp: Date.now(),
+        };
+        setMessages((prev) => [...prev, errorMessage]);
+      }
     } finally {
       setIsLoading(false);
+      abortControllerRef.current = null;
     }
   }, [chatId, clearLogs]);
 
@@ -88,7 +106,7 @@ function App() {
       <div className="h-screen bg-[#1a1a1a] flex flex-col relative overflow-hidden">
         <Header />
         <MessageList messages={messages} isLoading={isLoading} logs={logs} />
-        <ChatInput onSend={handleSendMessage} isLoading={isLoading} />
+        <ChatInput onSend={handleSendMessage} isLoading={isLoading} onCancel={handleCancelRequest} />
       </div>
     </VoiceContext.Provider>
   );

@@ -1,5 +1,5 @@
 import { useState, FormEvent, KeyboardEvent } from 'react';
-import { Volume2, VolumeX } from 'lucide-react';
+import { Volume2, VolumeX, X } from 'lucide-react';
 import { VoiceButton } from './VoiceButton';
 import { useVoiceContext } from '../App';
 import { useTextToSpeech } from '../hooks/useTextToSpeech';
@@ -7,9 +7,10 @@ import { useTextToSpeech } from '../hooks/useTextToSpeech';
 interface ChatInputProps {
   onSend: (message: string) => void;
   isLoading: boolean;
+  onCancel?: () => void;
 }
 
-export const ChatInput = ({ onSend, isLoading }: ChatInputProps) => {
+export const ChatInput = ({ onSend, isLoading, onCancel }: ChatInputProps) => {
   const { isMuted, toggleMute } = useVoiceContext();
   const { isSpeaking, stop } = useTextToSpeech();
   const [input, setInput] = useState('');
@@ -58,22 +59,34 @@ export const ChatInput = ({ onSend, isLoading }: ChatInputProps) => {
             />
             
             <div className="absolute right-4 flex items-center gap-2">
-              <button
-                onClick={handleMuteToggle}
-                className={`flex items-center justify-center w-10 h-10 rounded-full transition-all duration-200 ${
-                  isMuted
-                    ? 'bg-[#3a3a3a] hover:bg-[#4a4a4a]'
-                    : 'bg-[#2a2a2a] hover:bg-[#3a3a3a]'
-                }`}
-                title={isMuted ? 'Unmute AI voice' : 'Mute AI voice'}
-              >
-                {isMuted ? (
-                  <VolumeX className="text-gray-400" size={18} />
-                ) : (
-                  <Volume2 className="text-[#ff9500]" size={18} />
-                )}
-              </button>
-              <VoiceButton onTranscript={handleVoiceTranscript} />
+              {!isLoading && (
+                <button
+                  onClick={handleMuteToggle}
+                  className={`flex items-center justify-center w-10 h-10 rounded-full transition-all duration-200 ${
+                    isMuted
+                      ? 'bg-[#3a3a3a] hover:bg-[#4a4a4a]'
+                      : 'bg-[#2a2a2a] hover:bg-[#3a3a3a]'
+                  }`}
+                  title={isMuted ? 'Unmute AI voice' : 'Mute AI voice'}
+                >
+                  {isMuted ? (
+                    <VolumeX className="text-gray-400" size={18} />
+                  ) : (
+                    <Volume2 className="text-[#ff9500]" size={18} />
+                  )}
+                </button>
+              )}
+              {isLoading && onCancel ? (
+                <button
+                  onClick={onCancel}
+                  className="flex items-center justify-center w-10 h-10 rounded-full bg-[#ff3b30] hover:bg-[#ff2d20] transition-all duration-200"
+                  title="Cancel request"
+                >
+                  <X className="text-white" size={18} />
+                </button>
+              ) : (
+                !isLoading && <VoiceButton onTranscript={handleVoiceTranscript} />
+              )}
             </div>
           </div>
         </form>

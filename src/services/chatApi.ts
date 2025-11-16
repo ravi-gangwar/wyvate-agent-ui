@@ -2,7 +2,11 @@ import { ChatResponse } from '../types/chat';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
-export const sendChatMessage = async (userQuery: string, chatId: string): Promise<ChatResponse> => {
+export const sendChatMessage = async (
+  userQuery: string,
+  chatId: string,
+  abortSignal?: AbortSignal
+): Promise<ChatResponse> => {
   try {
     const response = await fetch(`${API_BASE_URL}/chat`, {
       method: 'POST',
@@ -10,6 +14,7 @@ export const sendChatMessage = async (userQuery: string, chatId: string): Promis
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ userQuery, chatId, userId: '1' }),
+      signal: abortSignal,
     });
 
     if (!response.ok) {
@@ -19,6 +24,9 @@ export const sendChatMessage = async (userQuery: string, chatId: string): Promis
 
     return await response.json();
   } catch (error) {
+    if (error instanceof Error && error.name === 'AbortError') {
+      throw new Error('Request cancelled');
+    }
     console.error('Chat API error:', error);
     throw error;
   }
