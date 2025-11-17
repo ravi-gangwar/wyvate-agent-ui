@@ -12,7 +12,7 @@ export const ChatMessage = ({ message, isStreaming = false, stopStreaming = fals
   if (message.type === 'user') {
     return (
       <div className="flex justify-center mb-4 animate-slideIn">
-        <div className="user-message max-w-[80%] px-6 py-4 rounded-2xl bg-gradient-to-br from-[#ff9500] to-[#ff8500] text-white shadow-lg">
+        <div className="user-message max-w-[80%] px-6 py-4 rounded-2xl bg-gradient-to-br from-[#09C27E] to-[#08B370] text-white shadow-lg">
           <p className="text-base md:text-lg">{message.text}</p>
         </div>
       </div>

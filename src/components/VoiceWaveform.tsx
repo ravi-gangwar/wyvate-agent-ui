@@ -33,7 +33,7 @@ export const VoiceWaveform = ({ isSpeaking }: VoiceWaveformProps) => {
         {Array.from({ length: 40 }).map((_, i) => (
           <div
             key={i}
-            className="voice-wave-bar w-1 bg-gradient-to-t from-[#ff9500] via-[#ff8500] to-[#ff7500] rounded-full transition-all duration-150"
+            className="voice-wave-bar w-1 bg-gradient-to-t from-[#09C27E] via-[#08B370] to-[#07A062] rounded-full transition-all duration-150"
             style={{
               animationDelay: `${i * 0.05}s`,
               height: heights[i] ? `${heights[i]}px` : '20px',

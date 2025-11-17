@@ -102,6 +102,9 @@ export const MessageList = ({ messages, isLoading, logs = [], stopStreaming, set
   }, [messages, isLoading, stopStreaming]);
 
   useEffect(() => {
+    // Don't auto-scroll on welcome screen (no messages)
+    if (messages.length === 0) return;
+    
     // Auto-scroll when new messages arrive (only if not streaming or user hasn't scrolled up)
     const lastMessage = messages[messages.length - 1];
     const isStreaming = !isLoading && lastMessage?.type === 'ai' && lastMessage?.markdown_text && !stopStreaming;
@@ -114,6 +117,9 @@ export const MessageList = ({ messages, isLoading, logs = [], stopStreaming, set
 
   // Continuous scroll during text streaming - only if user hasn't scrolled up
   useEffect(() => {
+    // Don't auto-scroll on welcome screen (no messages)
+    if (messages.length === 0) return;
+    
     const lastMessage = messages[messages.length - 1];
     const isStreaming = !isLoading && lastMessage?.type === 'ai' && lastMessage?.markdown_text && !stopStreaming;
     
@@ -129,6 +135,9 @@ export const MessageList = ({ messages, isLoading, logs = [], stopStreaming, set
 
   // Use MutationObserver to detect DOM changes during streaming
   useEffect(() => {
+    // Don't auto-scroll on welcome screen (no messages)
+    if (messages.length === 0) return;
+    
     const container = scrollContainerRef.current;
     if (!container) return;
 
@@ -177,73 +186,73 @@ export const MessageList = ({ messages, isLoading, logs = [], stopStreaming, set
     <div ref={containerRef} className={`w-full max-w-3xl mx-auto flex flex-col space-y-4 ${!hasContent ? 'min-h-full justify-center' : 'py-4'}`}>
       {!hasContent && (
         <div className="text-center px-4">
-          <h2 className="text-2xl font-bold text-white mb-2">Welcome to Wyvate</h2>
+          <h2 className="text-2xl font-bold text-white mb-2">Welcome to <span className="text-[#09C27E]">Wyvate</span></h2>
           <p className="text-gray-400 mb-6">Your AI voice assistant for discovering nearby vendors</p>
           
           <div className="max-w-2xl mx-auto space-y-4 text-left">
-            <div className="bg-[#2a2a2a] border border-[#3a3a3a] rounded-xl p-4 hover:border-[#ff9500] transition-colors">
+            <div className="bg-[#2a2a2a] border border-[#3a3a3a] rounded-xl p-4 hover:border-[#09C27E] transition-colors">
               <h3 className="text-white font-semibold mb-2 flex items-center gap-2">
-                <span className="text-[#ff9500]">•</span> Explore Nearby Vendors
+                <span className="text-[#09C27E]">•</span> Explore Nearby Vendors
               </h3>
               <p className="text-gray-400 text-sm mb-3">Ask me to find vendors near you</p>
               <div className="flex flex-wrap gap-2">
                 <button
                   onClick={() => onSendMessage?.("Show me restaurants nearby")}
                   disabled={isLoading}
-                  className="px-3 py-1.5 bg-[#3a3a3a] hover:bg-[#ff9500] text-gray-300 hover:text-white rounded-lg text-xs transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-3 py-1.5 bg-[#3a3a3a] hover:bg-[#09C27E] text-gray-300 hover:text-white rounded-lg text-xs transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   "Show me restaurants nearby"
                 </button>
                 <button
                   onClick={() => onSendMessage?.("Find coffee shops in my area")}
                   disabled={isLoading}
-                  className="px-3 py-1.5 bg-[#3a3a3a] hover:bg-[#ff9500] text-gray-300 hover:text-white rounded-lg text-xs transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-3 py-1.5 bg-[#3a3a3a] hover:bg-[#09C27E] text-gray-300 hover:text-white rounded-lg text-xs transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   "Find coffee shops in my area"
                 </button>
               </div>
             </div>
 
-            <div className="bg-[#2a2a2a] border border-[#3a3a3a] rounded-xl p-4 hover:border-[#ff9500] transition-colors">
+            <div className="bg-[#2a2a2a] border border-[#3a3a3a] rounded-xl p-4 hover:border-[#09C27E] transition-colors">
               <h3 className="text-white font-semibold mb-2 flex items-center gap-2">
-                <span className="text-[#ff9500]">•</span> Explore Services Provided by Vendors
+                <span className="text-[#09C27E]">•</span> Explore Services Provided by Vendors
               </h3>
               <p className="text-gray-400 text-sm mb-3">Discover what services vendors offer</p>
               <div className="flex flex-wrap gap-2">
                 <button
                   onClick={() => onSendMessage?.("What services does this vendor provide?")}
                   disabled={isLoading}
-                  className="px-3 py-1.5 bg-[#3a3a3a] hover:bg-[#ff9500] text-gray-300 hover:text-white rounded-lg text-xs transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-3 py-1.5 bg-[#3a3a3a] hover:bg-[#09C27E] text-gray-300 hover:text-white rounded-lg text-xs transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   "What services does this vendor provide?"
                 </button>
                 <button
                   onClick={() => onSendMessage?.("Show me menu items")}
                   disabled={isLoading}
-                  className="px-3 py-1.5 bg-[#3a3a3a] hover:bg-[#ff9500] text-gray-300 hover:text-white rounded-lg text-xs transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-3 py-1.5 bg-[#3a3a3a] hover:bg-[#09C27E] text-gray-300 hover:text-white rounded-lg text-xs transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   "Show me menu items"
                 </button>
               </div>
             </div>
 
-            <div className="bg-[#2a2a2a] border border-[#3a3a3a] rounded-xl p-4 hover:border-[#ff9500] transition-colors">
+            <div className="bg-[#2a2a2a] border border-[#3a3a3a] rounded-xl p-4 hover:border-[#09C27E] transition-colors">
               <h3 className="text-white font-semibold mb-2 flex items-center gap-2">
-                <span className="text-[#ff9500]">•</span> Add to Cart and Order
+                <span className="text-[#09C27E]">•</span> Add to Cart and Order
               </h3>
               <p className="text-gray-400 text-sm mb-3">Add items to your cart and place orders</p>
               <div className="flex flex-wrap gap-2">
                 <button
                   onClick={() => onSendMessage?.("Add this item to cart")}
                   disabled={isLoading}
-                  className="px-3 py-1.5 bg-[#3a3a3a] hover:bg-[#ff9500] text-gray-300 hover:text-white rounded-lg text-xs transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-3 py-1.5 bg-[#3a3a3a] hover:bg-[#09C27E] text-gray-300 hover:text-white rounded-lg text-xs transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   "Add this item to cart"
                 </button>
                 <button
                   onClick={() => onSendMessage?.("I want to order this")}
                   disabled={isLoading}
-                  className="px-3 py-1.5 bg-[#3a3a3a] hover:bg-[#ff9500] text-gray-300 hover:text-white rounded-lg text-xs transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-3 py-1.5 bg-[#3a3a3a] hover:bg-[#09C27E] text-gray-300 hover:text-white rounded-lg text-xs transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   "I want to order this"
                 </button>
@@ -282,7 +291,7 @@ export const MessageList = ({ messages, isLoading, logs = [], stopStreaming, set
         <div className="flex justify-center animate-slideIn">
           <div className="ai-message px-4 py-3 rounded-2xl bg-[#2a2a2a] border border-[#3a3a3a] shadow-lg max-w-[80%]">
             <div className="flex items-start gap-2 text-gray-300">
-              <div className="w-1.5 h-1.5 rounded-full bg-[#ff9500] mt-2 flex-shrink-0 animate-pulse"></div>
+              <div className="w-1.5 h-1.5 rounded-full bg-[#09C27E] mt-2 flex-shrink-0 animate-pulse"></div>
               <div className="flex-1">
                 <StreamingLog 
                   text={logs[logs.length - 1].message} 
@@ -311,7 +320,7 @@ export const MessageList = ({ messages, isLoading, logs = [], stopStreaming, set
         <div className="flex justify-center animate-slideIn">
           <div className="ai-message px-4 py-3 rounded-2xl bg-[#2a2a2a] border border-[#3a3a3a] shadow-lg max-w-[80%]">
             <div className="flex items-center gap-2 text-gray-300">
-              <div className="w-1.5 h-1.5 rounded-full bg-[#ff9500] animate-pulse"></div>
+              <div className="w-1.5 h-1.5 rounded-full bg-[#09C27E] animate-pulse"></div>
               <span className="text-sm">Processing your request...</span>
             </div>
           </div>

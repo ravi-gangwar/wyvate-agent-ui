@@ -62,7 +62,7 @@ export const BackgroundAnimation = ({ isSpeaking }: BackgroundAnimationProps) =>
       
       if (isSpeaking) {
         // More vibrant when speaking
-        gradient.addColorStop(0, 'rgba(255, 149, 0, 0.15)');
+        gradient.addColorStop(0, 'rgba(9, 194, 126, 0.15)');
         gradient.addColorStop(0.3, 'rgba(42, 42, 42, 0.4)');
         gradient.addColorStop(0.6, 'rgba(26, 26, 26, 0.6)');
         gradient.addColorStop(1, 'rgba(26, 26, 26, 0.9)');
@@ -85,7 +85,7 @@ export const BackgroundAnimation = ({ isSpeaking }: BackgroundAnimationProps) =>
 
         ctx.beginPath();
         ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255, 149, 0, ${particle.opacity})`;
+        ctx.fillStyle = `rgba(9, 194, 126, ${particle.opacity})`;
         ctx.fill();
       });
 
@@ -102,8 +102,8 @@ export const BackgroundAnimation = ({ isSpeaking }: BackgroundAnimationProps) =>
           ctx.beginPath();
           ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
           const circleGradient = ctx.createRadialGradient(centerX, centerY, radius * 0.7, centerX, centerY, radius);
-          circleGradient.addColorStop(0, `rgba(255, 149, 0, ${opacity * 2})`);
-          circleGradient.addColorStop(1, `rgba(255, 149, 0, 0)`);
+          circleGradient.addColorStop(0, `rgba(9, 194, 126, ${opacity * 2})`);
+          circleGradient.addColorStop(1, `rgba(9, 194, 126, 0)`);
           ctx.fillStyle = circleGradient;
           ctx.fill();
         }
@@ -137,8 +137,8 @@ export const BackgroundAnimation = ({ isSpeaking }: BackgroundAnimationProps) =>
         className="absolute inset-0 opacity-30"
         style={{
           background: isSpeaking 
-            ? 'radial-gradient(circle at 50% 50%, rgba(255, 149, 0, 0.1) 0%, transparent 70%)'
-            : 'radial-gradient(circle at 50% 50%, rgba(255, 149, 0, 0.05) 0%, transparent 70%)',
+            ? 'radial-gradient(circle at 50% 50%, rgba(9, 194, 126, 0.1) 0%, transparent 70%)'
+            : 'radial-gradient(circle at 50% 50%, rgba(9, 194, 126, 0.05) 0%, transparent 70%)',
         }}
       />
     </div>

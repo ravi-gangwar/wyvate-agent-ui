@@ -39,7 +39,7 @@
 
   .markdown-content li:before {
     content: '•';
-    @apply absolute left-0 text-[#ff9500] font-bold;
+    @apply absolute left-0 text-[#09C27E] font-bold;
   }
 
   .markdown-content strong {
@@ -169,7 +169,7 @@
   }
 
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: #ff9500;
+    background: #09C27E;
   }
 
   /* Firefox scrollbar styling */
