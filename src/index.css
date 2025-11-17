@@ -95,6 +95,12 @@
   .sound-wave-bar-large:nth-child(5) {
     animation-delay: 0.6s;
   }
+
+  .voice-wave-bar {
+    animation: voiceWave 1.5s ease-in-out infinite;
+    min-height: 20px;
+    max-height: 60px;
+  }
 }
 
 @layer utilities {
@@ -133,5 +139,42 @@
       height: 32px;
       opacity: 1;
     }
+  }
+
+  @keyframes voiceWave {
+    0%, 100% {
+      transform: scaleY(0.3);
+      opacity: 0.4;
+    }
+    50% {
+      transform: scaleY(1);
+      opacity: 1;
+    }
+  }
+
+  /* Custom Scrollbar Styling */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: #1a1a1a;
+    border-radius: 4px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #3a3a3a;
+    border-radius: 4px;
+    transition: background 0.2s ease;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #ff9500;
+  }
+
+  /* Firefox scrollbar styling */
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #3a3a3a #1a1a1a;
   }
 }
